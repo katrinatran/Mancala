@@ -1,0 +1,2 @@
+# Mancala
+try delete
