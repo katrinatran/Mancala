@@ -1,2 +1,2 @@
 # Mancala
-try delete
+This will model the mancala board game.
