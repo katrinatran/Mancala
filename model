@@ -1,0 +1,172 @@
+package sample;
+
+/*
+ * So far i have done: player's moves, check if it is an empty pit so player can collect the stones
+ * now
+ * i need to make check if the stone is drop in mancala to get a free turn
+ * make the undo button
+ */
+import java.util.ArrayList;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.*;
+import javax.swing.event.ChangeListener;
+public class Model 
+{
+	private ArrayList<ChangeListener> listeners;
+	private int[][] mancala;
+	int winner;
+	
+	// stones is the initial number of stones
+	public Model(int stones)
+	{
+		listeners = new ArrayList<ChangeListener>();
+		mancala = new int[2][7];
+		
+		// initialize the mancala
+		mancala[0][0] = mancala[1][0] = 0;
+		for(int i =0; i<2; i++)
+		{
+			for(int j=1; j <7; j++)
+				mancala[i][j] = stones;
+		}
+	}
+	
+	public void addChangeListener(ChangeListener l)
+	{
+		listeners.add(l);
+	}
+	
+	// user 1 or user 2
+	public void move(int pitNum, int user)
+	{
+		// ask the user to pick either user 0 or 1
+		// pitNum goes from 1 to 6
+		int numStones = mancala[user][pitNum];
+		
+		if(user == 0)
+		{
+			mancala[user][pitNum] = 0;
+			if(numStones <= pitNum)
+			{
+				int i=pitNum-1;
+				while(0<numStones)
+				{
+					mancala[user][i]++;
+					i--;
+					numStones--;
+				}
+				
+				// check if the last stone was in an empty pit
+				if(mancala[user][i+1] == 1)
+				{
+					mancala[user][0] += mancala[user+1][i+1];
+					mancala[user+1][i+1] = 0;
+				}
+				
+				// check to get a free turn
+			}
+			else
+			{
+				int i=pitNum-1;
+				while(numStones>0)
+				{
+					while(0<=i && numStones >0) 
+					{
+						mancala[user][i]++;
+						i--;
+						numStones--;
+					}
+					// check if the last stone was in an empty pit
+					if(numStones == 0 && mancala[user][i+1] == 1)
+					{
+						mancala[user][0] += mancala[user+1][i+1];
+						mancala[user+1][i+1] = 0;
+					}
+					
+					for(int j=1; j<=6 && 0< numStones; j++, numStones--)
+						mancala[user+1][j]++;
+					
+					// reset the value of index back to opponent's pits
+					i=6;
+				}
+			}
+		}
+		// is it is user 1(technically user 2)
+		else
+		{
+			mancala[user][pitNum] = 0;
+			if(numStones <= (6-pitNum))
+			{
+				int i=pitNum+1;
+				while(0<numStones) 
+				{
+					mancala[user][i]++;
+					i++;
+					numStones--;
+				}
+					
+				// check if the last stone was in an empty pit
+				if(mancala[user][i-1] == 1)
+				{
+					mancala[user][0] += mancala[user-1][i-1];
+					mancala[user-1][i-1] = 0;
+				}
+			}
+			else
+			{
+				int i=pitNum+1;
+				while(numStones > 0)
+				{
+					while(i<=6 && numStones >0)
+					{
+						mancala[user][i]++;
+						i++;
+						numStones--;
+					}
+					
+					// check if the last stone was in an empty pit
+					if(numStones == 0 && mancala[user][i-1] == 1)
+					{
+						mancala[user][0] += mancala[user-1][i-1];
+						mancala[user-1][i-1] = 0;
+					}
+	
+					// add one to his mancala
+					if(numStones >0)
+					{
+						mancala[user][0]++;
+						numStones--;
+					}
+					
+					// add to the opponent's pits
+					for(int j=6; j>0 && numStones>0; j--, numStones--)
+						mancala[user-1][j]++;
+					
+					i = 1;
+				}
+			}
+		}
+		
+		ChangeEvent e = new ChangeEvent(this);
+		for(ChangeListener s: listeners)
+			s.stateChanged(e);
+	}
+	
+	public int checkWinner()
+	{
+		for(int i =0; i <7; i++)
+		{
+			if(mancala[0][i] == 0)
+				winner = 1;
+		}
+		
+		for(int i =0; i <7; i++)
+		{
+			if(mancala[1][i] == 0)
+				winner = 0;
+		}
+		
+		return winner;
+	}
+}
