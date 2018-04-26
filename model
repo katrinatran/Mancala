@@ -1,9 +1,8 @@
 package sample;
 
 /*
- * So far i have done: player's moves, check if it is an empty pit so player can collect the stones
+ * So far i have done: player's moves, check if it is an empty pit so player can collect the stones, free turns
  * now
- * i need to make check if the stone is drop in mancala to get a free turn
  * make the undo button
  */
 import java.util.ArrayList;
@@ -15,7 +14,9 @@ public class Model
 {
 	private ArrayList<ChangeListener> listeners;
 	private int[][] mancala;
-	int winner;
+	private int winner;
+	private int user;
+	
 	
 	// stones is the initial number of stones
 	public Model(int stones)
@@ -38,7 +39,7 @@ public class Model
 	}
 	
 	// user 1 or user 2
-	public void move(int pitNum, int user)
+	public void move(int pitNum)
 	{
 		// ask the user to pick either user 0 or 1
 		// pitNum goes from 1 to 6
@@ -47,48 +48,59 @@ public class Model
 		if(user == 0)
 		{
 			mancala[user][pitNum] = 0;
+			int i=pitNum;
+			
 			if(numStones <= pitNum)
 			{
-				int i=pitNum-1;
 				while(0<numStones)
 				{
-					mancala[user][i]++;
 					i--;
+					mancala[user][i]++;
 					numStones--;
 				}
 				
-				// check if the last stone was in an empty pit
-				if(mancala[user][i+1] == 1)
-				{
-					mancala[user][0] += mancala[user+1][i+1];
-					mancala[user+1][i+1] = 0;
-				}
-				
 				// check to get a free turn
+				if(i==0)
+					user = 0;
+				else
+					user = 1;
+				
+				// check if the last stone was in an empty pit
+				if(i!= 0 && mancala[user][i] == 1)
+				{
+					mancala[user][0] += mancala[user+1][i];
+					mancala[user+1][i] = 0;
+				}
 			}
 			else
 			{
-				int i=pitNum-1;
 				while(numStones>0)
 				{
 					while(0<=i && numStones >0) 
 					{
-						mancala[user][i]++;
 						i--;
+						mancala[user][i]++;
 						numStones--;
 					}
+					
+					// check to get a free turn
+					if(numStones ==0 && i==0)
+						user = 0;
+					else
+						user = 1;
+					
 					// check if the last stone was in an empty pit
-					if(numStones == 0 && mancala[user][i+1] == 1)
+					if(numStones ==0 && i!= 0 && mancala[user][i] == 1)
 					{
-						mancala[user][0] += mancala[user+1][i+1];
-						mancala[user+1][i+1] = 0;
+						mancala[user][0] += mancala[user+1][i];
+						mancala[user+1][i] = 0;
 					}
 					
 					for(int j=1; j<=6 && 0< numStones; j++, numStones--)
 						mancala[user+1][j]++;
 					
-					// reset the value of index back to opponent's pits
-					i=6;
+					// reset the value of index back to his pits
+					i=7;
 				}
 			}
 		}
@@ -96,54 +108,61 @@ public class Model
 		else
 		{
 			mancala[user][pitNum] = 0;
+			int i= pitNum;
+			
 			if(numStones <= (6-pitNum))
 			{
-				int i=pitNum+1;
 				while(0<numStones) 
 				{
-					mancala[user][i]++;
 					i++;
+					mancala[user][i]++;
 					numStones--;
 				}
 					
 				// check if the last stone was in an empty pit
-				if(mancala[user][i-1] == 1)
+				if(mancala[user][i] == 1)
 				{
-					mancala[user][0] += mancala[user-1][i-1];
-					mancala[user-1][i-1] = 0;
+					mancala[user][0] += mancala[user-1][i];
+					mancala[user-1][i] = 0;
 				}
 			}
 			else
 			{
-				int i=pitNum+1;
 				while(numStones > 0)
 				{
 					while(i<=6 && numStones >0)
 					{
-						mancala[user][i]++;
 						i++;
+						mancala[user][i]++;
 						numStones--;
 					}
 					
 					// check if the last stone was in an empty pit
-					if(numStones == 0 && mancala[user][i-1] == 1)
+					if(numStones == 0 && mancala[user][i] == 1)
 					{
-						mancala[user][0] += mancala[user-1][i-1];
-						mancala[user-1][i-1] = 0;
+						mancala[user][0] += mancala[user-1][i];
+						mancala[user-1][i] = 0;
 					}
-	
-					// add one to his mancala
+					
+					// move and add one to his mancala
 					if(numStones >0)
 					{
 						mancala[user][0]++;
+						pitNum = 0;
 						numStones--;
 					}
+					
+					// check for a free turn
+					if(numStones ==0 && pitNum == 0)
+						user = 1;
+					else
+						user = 0;
 					
 					// add to the opponent's pits
 					for(int j=6; j>0 && numStones>0; j--, numStones--)
 						mancala[user-1][j]++;
 					
-					i = 1;
+					i = 0;
 				}
 			}
 		}
@@ -168,5 +187,10 @@ public class Model
 		}
 		
 		return winner;
+	}
+	
+	public int getPlayer()
+	{
+		return user;
 	}
 }
