@@ -172,7 +172,12 @@ public class Model
 			s.stateChanged(e);
 	}
 	
-	public int checkWinner()
+	public int[][] getStones()
+	{
+		return mancala;
+	}
+	
+	public int winner()
 	{
 		for(int i =0; i <7; i++)
 		{
@@ -187,6 +192,12 @@ public class Model
 		}
 		
 		return winner;
+	}
+	
+	// either player 0 or player 1
+	public void setPlayer(int p)
+	{
+		user = p;
 	}
 	
 	public int getPlayer()
