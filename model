@@ -10,7 +10,6 @@ public class Model
 	private int[][] mancala;
 	private int winner;
 	private int user;
-	private boolean freeTurn;
 	
 	// set the initial num stones
 	public void setStones(int num)
@@ -42,7 +41,6 @@ public class Model
 				}
 			}
 			user = 0;
-			freeTurn = false;
 		}
 	
 	public void addChangeListener(ChangeListener l)
@@ -56,11 +54,11 @@ public class Model
 		// pitNum goes from 1 to 6
 		int numStones = mancala[user][pitNum];
 		
+		
 		if(user == 0)
 		{
-			mancala[user][pitNum] = 0;
+			mancala[0][pitNum] = 0;
 			int i = pitNum;
-			
 			if(numStones <= pitNum)
 			{
 				while(0 < numStones)
@@ -73,18 +71,18 @@ public class Model
 				// check to get a free turn
 				if(i == 0)
 				{
-					freeTurn = true;
+					user = 0;
 				}
 				else
 				{
-					freeTurn = false;
+					user = 1;
 				}
 				
 				// check if the last stone was in an empty pit
-				if(i != 0 && mancala[user][i] == 1)
+				if(i != 0 && mancala[0][i] == 1)
 				{
-					mancala[user][0] += mancala[user + 1][i] + 1;
-					mancala[user + 1][i] = mancala[user][i] = 0;
+					mancala[0][0] += mancala[1][i] + 1;
+					mancala[1][i] = mancala[0][i] = 0;
 				}
 			}
 			//numStones > pitNum
@@ -95,50 +93,51 @@ public class Model
 					while(0 < i && numStones > 0) 
 					{
 						i--;
-						mancala[user][i]++;
+						mancala[0][i]++;
 						numStones--;
 					}
+					
+					// check if the last stone was in an empty pit
+					if(numStones == 0 && i!= 0 && mancala[0][i] == 1)
+					{
+						mancala[0][0] += mancala[1][i] + 1;
+						mancala[1][i] = mancala[0][i] = 0;
+					}
+					
 					// reset the value of index back to his pits
 					i = 6;
 					
-					for(int j = 1; j <= 6 && 0 < numStones; j++, numStones--)
+					for(int j = 1; j <= 6 && 0 < numStones; j++)
 					{
-						mancala[user + 1][j]++;
+						mancala[1][j]++;
+						numStones--;
 					}
 					
 					// check to get a free turn
 					if(numStones == 0 && i == 0)
 					{
-						freeTurn = true;
+						user = 0;
 					}
 					else
 					{
-						freeTurn = false;
-					}
-					
-					// check if the last stone was in an empty pit
-					if(numStones == 0 && i!= 0 && mancala[user][i] == 1)
-					{
-						mancala[user][0] += mancala[user+1][i] + 1;
-						mancala[user+1][i] = mancala[user][i] = 0;
+						user = 1;
 					}
 					
 				}
 			}
 		}
 		
-		//since not user 0; goes to this else = user 1
+		// User 1
 		else
 		{
-			mancala[user][pitNum] = 0;
+			mancala[1][pitNum] = 0;
 			int i = pitNum;
-			
 			if(numStones <= (6 - pitNum))
 			{
 				while(0 < numStones) 
 				{
 					i++;
-					mancala[user][i]++;
+					mancala[1][i]++;
 					numStones--;
 				}
 					
@@ -148,7 +147,10 @@ public class Model
 					mancala[user][0] += mancala[user-1][i] + 1;
 					mancala[user-1][i] = mancala[user][i] = 0;
 				}
-				freeTurn = false;
+				
+				// change the turn to user 0
+				user = 0;
+				
 			}
 			else
 			{
@@ -157,41 +159,43 @@ public class Model
 					while(i < 6 && numStones > 0)
 					{
 						i++;
-						mancala[user][i]++;
+						mancala[1][i]++;
 						numStones--;
 					}
 					
 					// check if the last stone was in an empty pit
-					if(numStones == 0 && mancala[user][i] == 1)
+					if(numStones == 0 && mancala[1][i] == 1)
 					{
-						mancala[user][0] += mancala[user-1][i] + 1;
-						mancala[user-1][i] = mancala[user][i] = 0;
+						mancala[1][0] += mancala[0][i] + 1;
+						mancala[0][i] = mancala[1][i] = 0;
 					}
+					
 					
 					// move and add one to his mancala
 					if(numStones > 0)
 					{
-						mancala[user][0]++;
+						i = 0;
+						mancala[1][0]++;
 						numStones--;
 					}
 					
 					// check for a free turn
 					if(numStones == 0 && i == 0)
 					{
-						freeTurn = true;
+						user = 1;
 					}
 					else
 					{
-						freeTurn = false;
+						user = 0;
 					}
 					
 					// add to the opponent's pits
-					for(int j = 6; j > 0 && numStones > 0; j--, numStones--)
+					for(int j = 6; j > 0 && numStones > 0; j--)
 					{
-						mancala[user-1][j]++;
+						mancala[0][j]++;
+						numStones--;
 					}
 					
-					i = 0;
 				}
 			}
 		}
@@ -268,7 +272,10 @@ public class Model
 	
 	public int getPlayer()
 	{
-		if (!freeTurn)
+		return user;
+	}
+	/*
+	 * if (!freeTurn)
 		{
 			if (user == 0)
 			{
@@ -279,6 +286,6 @@ public class Model
 				user = 0;
 			}
 		}
-		return user;
-	}
+		
+	 */
 }
