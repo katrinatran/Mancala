@@ -27,21 +27,26 @@ public class MancalaTest
 					}
 				});
 		
+		JButton four = new JButton("Four stones");
+		four.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						model.setStones(4);
+					}
+				});
+		
 		int x = 20;
 		int y = 60;
 		
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("Choose a number of stones then the board style");
 		frame.setLayout(new BorderLayout());
 		
 		// frame 2 for the mancala board
 		JFrame f2 = new JFrame();
 		f2.setSize(1000, 500);
 		f2.setLocation(0, 200);		
-		
-		//JTextArea textStyle = new JTextArea();
-		//textStyle.setSize(150, 150);
-		//textStyle.setText("These are the Mancala Board Styles that you can choose. Choose one only.");
-		
+
 		//stones frame
 		final MancalaDesign stones = new Stones(x, y, 280, 100, model.getStones());
 		MancalaIcon s = new MancalaIcon(stones, 450, 1000);
@@ -295,8 +300,9 @@ public class MancalaTest
 		};
 		
 		model.addChangeListener(c);
-		frame.add(three,BorderLayout.NORTH);
-		frame.add(CircleStyle, BorderLayout.CENTER);
+		frame.add(three,BorderLayout.WEST);
+		frame.add(four,BorderLayout.EAST);
+		frame.add(CircleStyle, BorderLayout.NORTH);
 		frame.add(RectangleStyle, BorderLayout.SOUTH);
 		frame.setSize(140, 108);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
