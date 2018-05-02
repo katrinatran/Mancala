@@ -124,7 +124,12 @@ public class MancalaTest
 			        			 {
 			        				 pitNum = 6;
 			        			 }
-			        			 if (pitNum != -1)
+			        			 else
+			        			 {
+			        				 pitNum = -1;
+			        			 }
+			        			 
+			        			 if (model.getPlayer() == 0 && pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
 			        			 }
@@ -158,7 +163,12 @@ public class MancalaTest
 			        			 {
 			        				 pitNum = 6;
 			        			 }
-			        			 if (pitNum != -1)
+			        			 else
+			        			 {
+			        				 pitNum = -1;
+			        			 }
+			        			 
+			        			 if (model.getPlayer() == 1 && pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
 			        			 }
@@ -306,6 +316,6 @@ public class MancalaTest
 		frame.add(RectangleStyle, BorderLayout.SOUTH);
 		frame.setSize(140, 108);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		frame.setVisible(true);	
 	}
 }
