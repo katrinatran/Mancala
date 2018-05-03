@@ -1,6 +1,7 @@
 package sample;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -9,6 +10,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -310,10 +313,21 @@ public class MancalaTest
 		};
 		
 		model.addChangeListener(c);
-		frame.add(three,BorderLayout.WEST);
-		frame.add(four,BorderLayout.EAST);
-		frame.add(CircleStyle, BorderLayout.NORTH);
-		frame.add(RectangleStyle, BorderLayout.SOUTH);
+		
+		JPanel p1 = new JPanel(new GridLayout(1, 5));
+		p1.add(three);
+		p1.add(four);
+		frame.add(p1,BorderLayout.NORTH);
+		
+		JTextArea text = new JTextArea();
+		text.setText("Choose the number of stones then choose the board style");
+		frame.add(text, BorderLayout.CENTER);
+		
+		JPanel p2 = new JPanel(new GridLayout(1, 5));
+		p2.add(CircleStyle);
+		p2.add(RectangleStyle);
+		frame.add(p2, BorderLayout.SOUTH);
+		
 		frame.setSize(140, 108);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);	
