@@ -1,7 +1,12 @@
+/**
+ * File name: MancalaIcon.java
+ * Class name: MancalaIcon
+ * Description: MancalaIcon class implements Icon.
+ * @author Katrina Tran
+ */
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import javax.swing.Icon;
 
 public class MancalaIcon implements Icon
@@ -51,5 +56,4 @@ public class MancalaIcon implements Icon
 		Graphics2D g2 = (Graphics2D) g;
 		design.draw(g2);
 	}
-
 }
