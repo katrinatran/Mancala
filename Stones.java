@@ -1,3 +1,9 @@
+/**
+ * File name: Stones.java
+ * Class name: Stones
+ * Description: Stones is a blueprint for the stones on Manacala board.
+ * 				Stones implements MancalaDesign interface.
+ */
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -8,6 +14,14 @@ public class Stones implements MancalaDesign
 	private int h;
 	private int w;
 	private int [][] stones;
+	/**
+	 * Constructor for Stones
+	 * @param x
+	 * @param y
+	 * @param height
+	 * @param width
+	 * @param stone
+	 */
 	public Stones(int x, int y, int height, int width, int [][] stone)
 	{
 		/* 
@@ -21,6 +35,11 @@ public class Stones implements MancalaDesign
 	}
 
 	// add an extra parameter type int[][] mancala to determine the number of each pit
+	/**
+	 * The draw method from MancalaDesign interface.
+	 * draws stones on each pit. 
+	 * @param g2: Graphics2D
+	 */
 	public void draw(Graphics2D g2)
 	{
 		g2.setColor(Color.BLACK);

@@ -1,3 +1,9 @@
+/**
+ * File name: MancalaIcon.java
+ * Class name: MancalaIcon
+ * Description: MancalaIcon class implements Icon.
+ */
+
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,6 +15,12 @@ public class MancalaIcon implements Icon
 	private MancalaDesign design;
 	private int height;
 	private int width;
+	/**
+	 * Constructor for MancalaIcon
+	 * @param style
+	 * @param w
+	 * @param h
+	 */
 	public MancalaIcon(MancalaDesign style, int w, int h)
 	{
 		design = style;

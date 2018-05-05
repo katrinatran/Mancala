@@ -1,5 +1,9 @@
+/**
+ * File name: MancalaTest.java
+ * Class name: MancalaTest
+ * Description: The client class with main method where all the implementation happens
+*/
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -18,80 +23,61 @@ public class MancalaTest
 {
 	public static void main(String [] args)
 	{
-		// ask the player how many stones in each pit
+		/**
+		 * Adding a field to keep track of how many undo times
+		 */
+		JTextField undoTimes = new JTextField();
+		
 		Model model = new Model();
-		
-		Font f = new Font("Serif", Font.BOLD, 20);
-		
+	
 		JButton three = new JButton("Three stones");
-		three.setFont(f);
 		three.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				model.setStones(3);
-			}
-		});
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						model.setStones(3);
+					}
+				});
 		
 		JButton four = new JButton("Four stones");
-		four.setFont(f);
 		four.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				model.setStones(4);
-			}
-		});
-				
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						model.setStones(4);
+					}
+				});
+		
 		int x = 20;
 		int y = 60;
 		
-		JFrame frame = new JFrame("Choosing Style of Mancala Board");
+		JFrame frame = new JFrame("Choose a number of stones then the board style");
 		frame.setLayout(new BorderLayout());
 		
 		// frame 2 for the mancala board
 		JFrame f2 = new JFrame();
 		f2.setSize(1000, 500);
 		f2.setLocation(0, 200);		
-	
+
 		//stones frame
 		final MancalaDesign stones = new Stones(x, y, 280, 100, model.getStones());
 		MancalaIcon s = new MancalaIcon(stones, 450, 1000);
 		JLabel label2 = new JLabel(s);
+		
 
 		// to start the game
 		JFrame f3 = new JFrame();	
 		f3.setLocation(0, 100);
 		f3.setSize(140, 80);
-		
-		//undo button frame
-		JFrame f4 = new JFrame();
-		f4.setSize(100, 100);
-		f4.setLocation(300, 100);
-		
-		//set undoButton
-		JButton undoButton = new JButton("Undo Move");
-		undoButton.setFont(f);
-		undoButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				model.undoMove();
-			}
-		});
-		f4.add(undoButton);
-		
-		
+
 		//circle button
 		JButton CircleStyle = new JButton("Circle Style");
-		CircleStyle.setFont(f);
 		CircleStyle.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
 				//set stones and start game button
 				JButton startGame = new JButton("Start Game");
-				startGame.setFont(f);
 				startGame.addActionListener(new ActionListener()
 				{
 					public void actionPerformed(ActionEvent e) 
@@ -101,19 +87,18 @@ public class MancalaTest
 						f3.dispose();
 						f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						f2.setVisible(true);
-						
-						//get the undo button to appear
-						f4.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						f4.setVisible(true);
 					}
 				});
 				f3.add(startGame, BorderLayout.SOUTH);
 				f3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				f3.setVisible(true);
-				
-				
+
 				final MancalaDesign style = new CircleDesign(x, y, 280, 100);
 				MancalaIcon icon = new MancalaIcon(style, 450, 1000);
+				
+				/**
+				 * Add the mancala onto the label
+				 */
 				final JLabel label = new JLabel(icon);
 				label.addMouseListener(new MouseAdapter()
 				{
@@ -155,9 +140,24 @@ public class MancalaTest
 			        			 {
 			        				 pitNum = 6;
 			        			 }
-			        			 if (pitNum != -1)
+			        			 else
+			        			 {
+			        				 pitNum = -1;
+			        			 }
+			        			 
+			        			 if (model.getPlayer() == 0 && pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
+			        				 if(model.checkWinner() != -1)
+			        				 {
+			        					 JFrame done = new JFrame("Game Over");
+			        					 JTextField doneSMG = new JTextField();
+			        					 doneSMG.setText("Player " + (model.checkWinner()+1) + " wins");
+			        					 done.add(doneSMG);
+			        					 
+			        					 done.setVisible(true);
+			        					 done.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			        				 }
 			        			 }
 			        		 }
 			        	 }
@@ -189,15 +189,53 @@ public class MancalaTest
 			        			 {
 			        				 pitNum = 6;
 			        			 }
-			        			 if (pitNum != -1)
+			        			 else
+			        			 {
+			        				 pitNum = -1;
+			        			 }
+			        			 
+			        			 if (model.getPlayer() == 1 && pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
+			        				 if(model.checkWinner() != -1)
+			        				 {
+			        					 JFrame done = new JFrame("Game Over");
+			        					 JTextField doneSMG = new JTextField();
+			        					 doneSMG.setText("Player " + (model.checkWinner()+1) + " wins");
+			        					 done.add(doneSMG);
+			        					 
+			        					 done.setVisible(true);
+			        					 done.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			        				 }
 			        			 }
 			        		 }
 			        	 }
 			         }                
 			    });
 				
+				/**
+				 * Adding an undo button
+				 */				
+				JButton undo = new JButton("UNDO");
+				undo.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						if(model.getPlayer() ==1 && model.getNumUndoUser1() < 3
+								|| model.getPlayer() ==0 && model.getNumUndoUser2() < 3)
+						{
+							System.out.print(model.getPlayer());
+							model.getPrevMancala();
+						}
+					}
+				});
+				
+				JPanel undoP = new JPanel();
+				undoP.setLayout(new GridLayout(0,2));
+				undoP.add(undo);
+				undoP.add(undoTimes);
+				
+				f2.add(undoP, BorderLayout.SOUTH);
 				f2.add(label, BorderLayout.CENTER);
 				frame.dispose();
 				f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -207,14 +245,12 @@ public class MancalaTest
 		
 		//Rectangle button
 		JButton RectangleStyle = new JButton("Rectangle Style");
-		RectangleStyle.setFont(f);
 		RectangleStyle.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				//set stones and start game button
+				// set stones and start game button
 				JButton startGame = new JButton("Start Game");
-				startGame.setFont(f);
 				startGame.addActionListener(new ActionListener()
 				{
 					public void actionPerformed(ActionEvent e) 
@@ -224,17 +260,12 @@ public class MancalaTest
 						f3.dispose();
 						f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						f2.setVisible(true);
-						
-						//get the undo button to appear
-						f4.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						f4.setVisible(true);
 					}
 				});
 				f3.add(startGame, BorderLayout.SOUTH);
 				f3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				f3.setVisible(true);
-				
-				
+
 				final MancalaDesign style = new RectangleDesign(x, y, 280, 100);
 				MancalaIcon icon = new MancalaIcon(style, 450, 1000);
 				final JLabel label = new JLabel(icon);
@@ -281,10 +312,20 @@ public class MancalaTest
 			        			 if (pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
+			        				 if(model.checkWinner() != -1)
+			        				 {
+			        					 JFrame done = new JFrame("Game Over");
+			        					 JTextField doneSMG = new JTextField();
+			        					 doneSMG.setText("Player " + (model.checkWinner()+1) + " wins");
+			        					 done.add(doneSMG);
+			        					 
+			        					 done.setVisible(true);
+			        					 done.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			        				 }
 			        			 }
 			        		 }
 			        	 }
-			        	 else
+			        	 else if (model.getPlayer() == 1)
 			        	 {
 			        		 if ((yp >= p2top) && (yp <= p2bottom))
 			        		 {
@@ -315,14 +356,48 @@ public class MancalaTest
 			        			 if (pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
+			        				 if(model.checkWinner() != -1)
+			        				 {
+			        					 JFrame done = new JFrame("Game Over");
+			        					 JTextField doneSMG = new JTextField();
+			        					 doneSMG.setText("Player " + (model.checkWinner()+1) + " wins");
+			        					 done.add(doneSMG);
+			        					 
+			        					 done.setVisible(true);
+			        					 done.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			        				 }
 			        			 }
 			        		 }
 			        	 }
 			         }                
 			    });
 				
+				/**
+				 * Adding an undo button
+				 */				
+				JButton undo = new JButton("UNDO");
+				undo.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						if(model.getPlayer() ==1 && model.getNumUndoUser1() < 3
+								|| model.getPlayer() ==0 && model.getNumUndoUser2() < 3)
+						{
+							System.out.print(model.getPlayer());
+							model.getPrevMancala();
+						}
+					}
+				});
+				
+				JPanel undoP = new JPanel();
+				undoP.setLayout(new GridLayout(0,2));
+				undoP.add(undo);
+				undoP.add(undoTimes);
+				
+				f2.add(undoP, BorderLayout.SOUTH);
 				f2.add(label, BorderLayout.CENTER);
 				frame.dispose();
+				label.repaint();
 				f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				f2.setVisible(true);
 			}
@@ -333,35 +408,33 @@ public class MancalaTest
 			public void stateChanged(ChangeEvent e)
 			{
 				f2.repaint();
+				if(model.getPlayer()==1 && model.getNumUndoUser1() < 3)
+					undoTimes.setText("Player " + (model.getPlayer()+1) + " has used " + model.getNumUndoUser1() + " times of undo out of 3");
+				else if(model.getPlayer()==0 && model.getNumUndoUser2() < 3)
+					undoTimes.setText("Player " + (model.getPlayer()+1) + " has used " + model.getNumUndoUser2() + " times of undo out of 3");
+				else
+					undoTimes.setText("Player " + (model.getPlayer()+1) + " can't undo any more");
 			}
 		};
 		
 		model.addChangeListener(c);
 		
 		JPanel p1 = new JPanel(new GridLayout(1, 5));
-		three.setSize(150, 100);
 		p1.add(three);
-		four.setSize(150, 100);
 		p1.add(four);
-		//p1.setSize(150, 100);
-		frame.add(p1, BorderLayout.NORTH);
+		frame.add(p1,BorderLayout.NORTH);
 		
 		JTextArea text = new JTextArea();
-		text.setFont(f);
 		text.setText("Choose the number of stones then choose the board style");
-		text.setSize(300, 150);
 		frame.add(text, BorderLayout.CENTER);
 		
 		JPanel p2 = new JPanel(new GridLayout(1, 5));
-		CircleStyle.setSize(150, 100);
-		RectangleStyle.setSize(150, 100);
 		p2.add(CircleStyle);
 		p2.add(RectangleStyle);
-		//p2.setSize(150, 100);
 		frame.add(p2, BorderLayout.SOUTH);
 		
-		frame.pack();
+		frame.setSize(140, 108);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		frame.setVisible(true);	
 	}
 }

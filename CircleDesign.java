@@ -1,11 +1,13 @@
+/**
+ * File name: CircleDesign.java
+ * Class name: CircleDesign
+ * Description: CircleDesign is a blueprint for a circle Mancala board.
+ * 				CircleDesign implements MancalaDesign interface.
+ */
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-
-import javax.swing.Icon;
 
 /**
  * 
@@ -18,6 +20,13 @@ public class CircleDesign implements MancalaDesign
 	private int y;
 	private int h;
 	private int w;
+	/**
+	 * Constructor for CircleDesign
+	 * @param x
+	 * @param y
+	 * @param height
+	 * @param width
+	 */
 	public CircleDesign(int x, int y, int height, int width)
 	{
 		/* 
@@ -28,7 +37,12 @@ public class CircleDesign implements MancalaDesign
 		h = height;
 		w = width;
 	}
-
+	/**
+	 * The draw method from MancalaDesign interface.
+	 * draws circle pits with 2 colors.
+	 * @param g2: Graphics2D
+	 * @return none
+	 */
 	public void draw(Graphics2D g2)
 	{
 		Font f = new Font("Serif", Font.BOLD, 36);
@@ -36,6 +50,7 @@ public class CircleDesign implements MancalaDesign
 		Ellipse2D.Double mancala1 = new Ellipse2D.Double(x, y, w, h);
 		g2.setColor(Color.BLUE);
 		g2.draw(mancala1);
+		g2.drawString("B", 30+x + 10, y-10);
 		
 		Ellipse2D.Double pit1 = new Ellipse2D.Double(x + w + x, y, w, w);
 		g2.draw(pit1);
@@ -64,6 +79,7 @@ public class CircleDesign implements MancalaDesign
 		g2.setColor(Color.RED);
 		Ellipse2D.Double mancala2 = new Ellipse2D.Double(x + 7*w + 7*x, y, w, h);
 		g2.draw(mancala2);
+		g2.drawString("A", 30+x + 7*w + 7*x, y*6+15);
 		
 		Ellipse2D.Double pit11 = new Ellipse2D.Double(x + w + x, 4*y, w, w);
 		g2.draw(pit11);
