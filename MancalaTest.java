@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -19,6 +20,11 @@ public class MancalaTest
 {
 	public static void main(String [] args)
 	{
+		/**
+		 * Adding a field to keep track of how many undo times
+		 */
+		JTextField undoTimes = new JTextField();
+		
 		Model model = new Model();
 	
 		JButton three = new JButton("Three stones");
@@ -86,6 +92,10 @@ public class MancalaTest
 
 				final MancalaDesign style = new CircleDesign(x, y, 280, 100);
 				MancalaIcon icon = new MancalaIcon(style, 450, 1000);
+				
+				/**
+				 * Add the mancala onto the label
+				 */
 				final JLabel label = new JLabel(icon);
 				label.addMouseListener(new MouseAdapter()
 				{
@@ -135,6 +145,16 @@ public class MancalaTest
 			        			 if (model.getPlayer() == 0 && pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
+			        				 if(model.checkWinner() != -1)
+			        				 {
+			        					 JFrame done = new JFrame("Game Over");
+			        					 JTextField doneSMG = new JTextField();
+			        					 doneSMG.setText("Player " + (model.checkWinner()+1) + " wins");
+			        					 done.add(doneSMG);
+			        					 
+			        					 done.setVisible(true);
+			        					 done.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			        				 }
 			        			 }
 			        		 }
 			        	 }
@@ -174,12 +194,45 @@ public class MancalaTest
 			        			 if (model.getPlayer() == 1 && pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
+			        				 if(model.checkWinner() != -1)
+			        				 {
+			        					 JFrame done = new JFrame("Game Over");
+			        					 JTextField doneSMG = new JTextField();
+			        					 doneSMG.setText("Player " + (model.checkWinner()+1) + " wins");
+			        					 done.add(doneSMG);
+			        					 
+			        					 done.setVisible(true);
+			        					 done.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			        				 }
 			        			 }
 			        		 }
 			        	 }
 			         }                
 			    });
 				
+				/**
+				 * Adding an undo button
+				 */				
+				JButton undo = new JButton("UNDO");
+				undo.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						if(model.getPlayer() ==1 && model.getNumUndoUser1() < 3
+								|| model.getPlayer() ==0 && model.getNumUndoUser2() < 3)
+						{
+							System.out.print(model.getPlayer());
+							model.getPrevMancala();
+						}
+					}
+				});
+				
+				JPanel undoP = new JPanel();
+				undoP.setLayout(new GridLayout(0,2));
+				undoP.add(undo);
+				undoP.add(undoTimes);
+				
+				f2.add(undoP, BorderLayout.SOUTH);
 				f2.add(label, BorderLayout.CENTER);
 				frame.dispose();
 				f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -256,6 +309,16 @@ public class MancalaTest
 			        			 if (pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
+			        				 if(model.checkWinner() != -1)
+			        				 {
+			        					 JFrame done = new JFrame("Game Over");
+			        					 JTextField doneSMG = new JTextField();
+			        					 doneSMG.setText("Player " + (model.checkWinner()+1) + " wins");
+			        					 done.add(doneSMG);
+			        					 
+			        					 done.setVisible(true);
+			        					 done.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			        				 }
 			        			 }
 			        		 }
 			        	 }
@@ -290,12 +353,45 @@ public class MancalaTest
 			        			 if (pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
+			        				 if(model.checkWinner() != -1)
+			        				 {
+			        					 JFrame done = new JFrame("Game Over");
+			        					 JTextField doneSMG = new JTextField();
+			        					 doneSMG.setText("Player " + (model.checkWinner()+1) + " wins");
+			        					 done.add(doneSMG);
+			        					 
+			        					 done.setVisible(true);
+			        					 done.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			        				 }
 			        			 }
 			        		 }
 			        	 }
 			         }                
 			    });
 				
+				/**
+				 * Adding an undo button
+				 */				
+				JButton undo = new JButton("UNDO");
+				undo.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						if(model.getPlayer() ==1 && model.getNumUndoUser1() < 3
+								|| model.getPlayer() ==0 && model.getNumUndoUser2() < 3)
+						{
+							System.out.print(model.getPlayer());
+							model.getPrevMancala();
+						}
+					}
+				});
+				
+				JPanel undoP = new JPanel();
+				undoP.setLayout(new GridLayout(0,2));
+				undoP.add(undo);
+				undoP.add(undoTimes);
+				
+				f2.add(undoP, BorderLayout.SOUTH);
 				f2.add(label, BorderLayout.CENTER);
 				frame.dispose();
 				label.repaint();
@@ -309,6 +405,12 @@ public class MancalaTest
 			public void stateChanged(ChangeEvent e)
 			{
 				f2.repaint();
+				if(model.getPlayer()==1 && model.getNumUndoUser1() < 3)
+					undoTimes.setText("Player " + (model.getPlayer()+1) + " has used " + model.getNumUndoUser1() + " times of undo out of 3");
+				else if(model.getPlayer()==0 && model.getNumUndoUser2() < 3)
+					undoTimes.setText("Player " + (model.getPlayer()+1) + " has used " + model.getNumUndoUser2() + " times of undo out of 3");
+				else
+					undoTimes.setText("Player " + (model.getPlayer()+1) + " can't undo any more");
 			}
 		};
 		
