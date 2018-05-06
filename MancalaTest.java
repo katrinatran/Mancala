@@ -33,6 +33,9 @@ public class MancalaTest
 		
 		Font f = new Font("Serif", Font.BOLD, 20);
 		
+		/*
+		 * ask the player to choose how many stones to start then update the model
+		 */
 		JButton three = new JButton("Three stones");
 		three.setFont(f);
 		three.addActionListener(new ActionListener()
@@ -120,6 +123,9 @@ public class MancalaTest
 			        	 int yp = e.getY();
 			        	 int pitNum = -1;
 			        	 
+			        	 /*
+			        	  * check mouseListener postion for the first player
+			        	  */
 			        	 if(model.getPlayer() == 0)
 			        	 {
 			        		 if ((yp >= p1top) && (yp <= p1bottom))
@@ -151,6 +157,9 @@ public class MancalaTest
 			        			 if (model.getPlayer() == 0 && pitNum != -1)
 			        			 {
 			        				 model.move(pitNum);
+			        				 /*
+			        				  * After moving the stones, check if anyone wins yet then display a window for the winner
+			        				  */
 			        				 if(model.checkWinner() != -1)
 			        				 {
 			        					 JFrame done = new JFrame("Game Over");
@@ -166,6 +175,9 @@ public class MancalaTest
 			        	 }
 			        	 else
 			        	 {
+			        		 /*
+			        		  * check mouseListener position for the second player
+			        		  */
 			        		 if ((yp >= p2top) && (yp <= p2bottom))
 			        		 {
 			        			 if ((xp >= 140) && (xp <= 240))
@@ -219,6 +231,9 @@ public class MancalaTest
 				{
 					public void actionPerformed(ActionEvent e)
 					{
+						/*
+						 * Allow each user to undo at most 3 times
+						 */
 						if(model.getPlayer() ==1 && model.getNumUndoUser1() < 3
 								|| model.getPlayer() ==0 && model.getNumUndoUser2() < 3)
 						{
@@ -241,7 +256,10 @@ public class MancalaTest
 			}
 		});
 		
-		//Rectangle button
+		/**
+		 * Rectangle portion
+		 * is similar to the circle design except for calling the rectangle methods
+		 */
 		JButton RectangleStyle = new JButton("Rectangle Style");
 		RectangleStyle.setFont(f);
 		RectangleStyle.addActionListener(new ActionListener()
@@ -398,6 +416,10 @@ public class MancalaTest
 			}
 		});
 		
+		/**
+		 * the model class notifies the views by changeListener
+		 * it will repaint the board and update the undo text
+		 */
 		ChangeListener c = new ChangeListener()
 		{
 			public void stateChanged(ChangeEvent e)
@@ -415,6 +437,9 @@ public class MancalaTest
 		
 		model.addChangeListener(c);
 		
+		/**
+		 * Adding the panels and frame together
+		 */
 		JPanel p1 = new JPanel(new GridLayout(1, 5));
 		three.setSize(150, 100);
 		p1.add(three);
