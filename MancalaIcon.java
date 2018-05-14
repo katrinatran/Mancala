@@ -9,6 +9,12 @@ public class MancalaIcon implements Icon
 	private MancalaDesign design;
 	private int height;
 	private int width;
+	/**
+	 * Constructor for MancalaIcon
+	 * @param style: MancalaDesign style that is chosen
+	 * @param w: width of icon
+	 * @param h : height of icon
+	 */
 	public MancalaIcon(MancalaDesign style, int w, int h)
 	{
 		design = style;

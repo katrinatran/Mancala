@@ -43,6 +43,7 @@ public class RectangleDesign implements MancalaDesign
 		Rectangle2D.Double mancala1 = new Rectangle2D.Double(x, y, w, h);
 		g2.setColor(Color.BLACK);
 		g2.draw(mancala1);
+		g2.drawString("B", 30+x + 10, y-10);
 		
 		g2.setColor(Color.ORANGE);
 		Rectangle2D.Double pit1 = new Rectangle2D.Double(x + w + x, y, w, w);
@@ -77,6 +78,7 @@ public class RectangleDesign implements MancalaDesign
 		g2.setColor(Color.BLACK);
 		Rectangle2D.Double mancala2 = new Rectangle2D.Double(x + 7*w + 7*x, y, w, h);
 		g2.draw(mancala2);
+		g2.drawString("A", 30+x + 7*w + 7*x, y*6+15);
 		
 		g2.setColor(Color.GREEN);
 		Rectangle2D.Double pit11 = new Rectangle2D.Double(x + w + x, 4*y, w, w);

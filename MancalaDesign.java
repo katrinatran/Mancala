@@ -10,7 +10,7 @@ public interface MancalaDesign
 {
 	/**
 	 * draws stones and pits for each design of Mancala board.
-	 * @param g2
+	 * @param g2: Graphics2D object
 	 */
 	void draw(Graphics2D g2);
 }

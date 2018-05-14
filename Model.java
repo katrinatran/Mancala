@@ -241,37 +241,48 @@ public class Model
 	}
 	/**
 	 * Checks which user wins
-	 * @return winner - 0 if player 1 wins; 1 if player 2 wins
+	 * @return winner of game - 0 if player 1 wins; 1 if player 2 wins
 	 */
 	public int checkWinner()
 	{
-		/**
-		 * assume user 0 wins
-		 *  check if the user 0 has all 0's
-		 *  if not, assume and assign the winner is user 1
-		 *  check if the user 1 has all 0's
-		 *  if not, return nobody wins
-		 */
-		winner = 1;
-		boolean done = true;
-		for(int i =1; i <7; i++)
+		winner = -1;
+		int sum0 = 0;
+		int sum1 = 0;
+		boolean gameDone = false;
+		for(int i = 1; i < 7; i++)
 		{
-			if(mancala[0][i] != 0)
+			sum0 = sum0 + mancala[0][i];
+			sum1 = sum1 + mancala[1][i];
+		}
+		if (sum0 == 0)
+		{
+			mancala[1][0] += sum1;
+			for(int i = 1; i < 7; i++)
+			{
+				mancala[1][i] = 0;
+			}
+			gameDone = true;
+		}
+		if (sum1 == 0)
+		{
+			mancala[0][0] += sum0;
+			for(int i = 1; i < 7; i++)
+			{
+				mancala[0][i] = 0;
+			}
+			gameDone = true;
+		}
+		if (gameDone)
+		{
+			if (mancala[0][0] < mancala[1][0])
 			{
 				winner = 0;
-				done = false;
 			}
-		}
-		
-		if(!done)
-		{
-			for(int i =1; i <7; i++)
+			else
 			{
-				if(mancala[1][i] != 0)
-					winner = -1;
+				winner = 1;
 			}
-		}
-		
+		}		
 		return winner;
 	}
 	
