@@ -3,35 +3,28 @@
  * Class name: CircleDesign
  * Description: CircleDesign is a blueprint for a circle Mancala board.
  * 				CircleDesign implements MancalaDesign interface.
+ * @author Katrina Tran, Risako Numamoto
  */
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
-/**
- * 
- * @author Katrina Tran
- *
- */
 public class CircleDesign implements MancalaDesign
 {
 	private int x;
 	private int y;
 	private int h;
 	private int w;
-	/**
-	 * Constructor for CircleDesign
-	 * @param x
-	 * @param y
-	 * @param height
-	 * @param width
+  /*
+   * Constructor of CircleDesign
+	 * @param x : x of each pit
+	 * @param y : y of each pit
+	 * @param height : height of board
+	 * @param width : width of board
 	 */
 	public CircleDesign(int x, int y, int height, int width)
 	{
-		/* 
-		 * x=20, y=60, h=300, w=100
-		 */
 		this.x = x;
 		this.y = y;
 		h = height;
@@ -41,7 +34,6 @@ public class CircleDesign implements MancalaDesign
 	 * The draw method from MancalaDesign interface.
 	 * draws circle pits with 2 colors.
 	 * @param g2: Graphics2D
-	 * @return none
 	 */
 	public void draw(Graphics2D g2)
 	{

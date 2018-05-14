@@ -2,9 +2,9 @@
  * File name: Model.java
  * Class name: Model
  * Description: Model controls move of the players and stones
+ * @author Hiep Tran, Katrina Tran
  */
 import java.util.ArrayList;
-
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -18,8 +18,29 @@ public class Model
 	private int prevUser;
 	private int numUndoUser1;
 	private int numUndoUser2;
-	
-	// set the initial num stones
+	/**
+	 * Constructor for Model
+	 */
+	public Model()
+	{
+		listeners = new ArrayList<ChangeListener>();
+		mancala = new int[2][7];
+		tempMancala = new int[2][7];
+		
+		// initialize the mancala
+		mancala[0][0] = mancala[1][0] = 0;
+		tempMancala[0][0] = tempMancala[1][0] = 0;
+		
+		for(int i = 0; i < 2; i++)
+		{
+			for(int j = 1; j < 7; j++)
+			{
+				tempMancala[i][j] = mancala[i][j] = 0;
+			}
+		}
+		prevUser = user = 0;
+		numUndoUser1 = numUndoUser2 = 0;
+	}
 	/**
 	 * set stones on each pits
 	 * @param num: the number of stone user chooses
@@ -29,73 +50,43 @@ public class Model
 		mancala[0][0] = mancala[1][0] = 0;
 		tempMancala[0][0] = tempMancala[1][0] = 0;
 		
-		for(int i =0; i<2; i++)
+		for(int i = 0; i < 2; i++)
 		{
-			for(int j=1; j <7; j++)
+			for(int j = 1; j < 7; j++)
 			{
 				tempMancala[i][j] = mancala[i][j] = num;
 			}
 		}
 	}
-	
-	// stones is the initial number of stones
 	/**
-	 * Constructor for Model
-	 */
-	public Model()
-	{
-		listeners = new ArrayList<ChangeListener>();
-		mancala = new int[2][7];
-		tempMancala = new int[2][7];
-			
-		// initialize the mancala
-		mancala[0][0] = mancala[1][0] = 0;
-		tempMancala[0][0] = tempMancala[1][0] = 0;
-			
-		for(int i =0; i<2; i++)
-		{
-			for(int j=1; j <7; j++)
-			{
-				tempMancala[i][j] = mancala[i][j] = 0;
-			}
-		}
-		prevUser = user = 0;
-		numUndoUser1 = numUndoUser2 = 0;
-	}
-	/**
-	 * adds ChangeKistener
-	 * @param l: ChangeListener
+	 * adds ChangeListener
+	 * @param l: ChangeListener adding to see if change
 	 */
 	public void addChangeListener(ChangeListener l)
 	{
 		listeners.add(l);
 	}
-	
-	// user 1 or user 2
 	/**
 	 * moves the stones
-	 * @param pitNum: int
+	 * @param pitNum: the pit number that was chosen
 	 */
 	public void move(int pitNum)
 	{
 		// pitNum goes from 1 to 6
-		int numStones = mancala[user][pitNum];
-		
+		int numStones = mancala[user][pitNum];		
 		/**
 		 * Store the manala to a temp mancala
 		 */
-		for(int i =0; i<2; i++)
+		for(int i = 0; i < 2; i++)
 		{
-			for(int j=0; j <7; j++)
+			for(int j = 0; j < 7; j++)
 			{
 				tempMancala[i][j] = mancala[i][j];
 			}
 		}
 		prevUser = user;
-		
 		if(user == 0)
 		{
-			
 			mancala[0][pitNum] = 0;
 			int i = pitNum;
 			if(numStones <= pitNum)
@@ -103,7 +94,7 @@ public class Model
 				while(0 < numStones)
 				{
 					i--;
-					mancala[user][i]++;
+					mancala[0][i]++;
 					numStones--;
 				}
 				
@@ -161,12 +152,10 @@ public class Model
 					{
 						user = 1;
 					}
-					
 				}
 			}
 		}
-		
-		// User 1
+		//since not user 0; goes to this else = user 1
 		else
 		{
 			mancala[1][pitNum] = 0;
@@ -179,17 +168,13 @@ public class Model
 					mancala[1][i]++;
 					numStones--;
 				}
-					
-				// check if the last stone was in an empty pit
-				if(mancala[user][i] == 1)
+				if(mancala[1][i] == 1)
 				{
-					mancala[user][0] += mancala[user-1][i] + 1;
-					mancala[user-1][i] = mancala[user][i] = 0;
+					mancala[1][0] += mancala[0][i] + 1;
+					mancala[0][i] = mancala[1][i] = 0;
 				}
-				
 				// change the turn to user 0
 				user = 0;
-				
 			}
 			else
 			{
@@ -201,23 +186,19 @@ public class Model
 						mancala[1][i]++;
 						numStones--;
 					}
-						
 					// check if the last stone was in an empty pit
 					if(numStones == 0 && mancala[1][i] == 1)
 					{
 						mancala[1][0] += mancala[0][i] + 1;
 						mancala[0][i] = mancala[1][i] = 0;
 					}
-						
-						
-					// move and add one to his mancala
+					// move and add one to this mancala
 					if(numStones > 0)
 					{
 						i = 0;
 						mancala[1][0]++;
 						numStones--;
 					}
-						
 					// check for a free turn
 					if(numStones == 0 && i == 0)
 					{
@@ -234,7 +215,6 @@ public class Model
 						mancala[0][j]++;
 						numStones--;
 					}
-						
 				}
 			}
 		}
@@ -243,7 +223,6 @@ public class Model
 		for(ChangeListener s: listeners)
 			s.stateChanged(e);
 	}
-	
 	/**
 	 * gets stones
 	 * @return int 2D array
@@ -252,47 +231,55 @@ public class Model
 	{
 		return mancala;
 	}
-	
 	/**
 	 * Checks which user wins
-	 * @return int
+	 * @return winner of game - 0 if player 1 wins; 1 if player 2 wins
 	 */
 	public int checkWinner()
 	{
-		/**
-		 * assume user 0 wins
-		 *  check if the user 0 has all 0's
-		 *  if not, assume and assign the winner is user 1
-		 *  check if the user 1 has all 0's
-		 *  if not, return nobody wins
-		 */
-		winner = 1;
-		boolean done = true;
-		for(int i =1; i <7; i++)
+		winner = -1;
+		int sum0 = 0;
+		int sum1 = 0;
+		boolean gameDone = false;
+		for(int i = 1; i < 7; i++)
 		{
-			if(mancala[0][i] != 0)
+			sum0 = sum0 + mancala[0][i];
+			sum1 = sum1 + mancala[1][i];
+		}
+		if (sum0 == 0)
+		{
+			mancala[1][0] += sum1;
+			for(int i = 1; i < 7; i++)
+			{
+				mancala[1][i] = 0;
+			}
+			gameDone = true;
+		}
+		if (sum1 == 0)
+		{
+			mancala[0][0] += sum0;
+			for(int i = 1; i < 7; i++)
+			{
+				mancala[0][i] = 0;
+			}
+			gameDone = true;
+		}
+		if (gameDone)
+		{
+			if (mancala[0][0] < mancala[1][0])
 			{
 				winner = 0;
-				done = false;
 			}
-		}
-		
-		if(!done)
-		{
-			for(int i =1; i <7; i++)
+			else
 			{
-				if(mancala[1][i] != 0)
-					winner = -1;
+				winner = 1;
 			}
-		}
-		
+		}		
 		return winner;
 	}
-	
-	// either player 0 or player 1
 	/**
 	 * accessor for player
-	 * @param p: int
+	 * @param p: 0 = player 1; 1 = player 2
 	 */
 	public void setPlayer(int p)
 	{
@@ -300,28 +287,26 @@ public class Model
 	}
 	/**
 	 * getter for player
-	 * @return user: int
+	 * @return user: 0 = player 1; 1 = player 2
 	 */
 	public int getPlayer()
 	{
 		return user;
 	}
-	
 	/**
 	 * getter for previous user
-	 * @return previousUser: int
+	 * @return previousUser: 0 = player 1; 1 = player 2
 	 */
 	public int getPrevUser()
 	{
 		return prevUser;
 	}
-	
 	/**
-	 * get the board infomation before user undoes
+	 * get the board information before user undoes
 	 */
 	public void getPrevMancala()
 	{
-		for(int i =0; i<2; i++)
+		for(int i = 0; i < 2; i++)
 		{
 			for(int j=0; j <7; j++)
 			{
@@ -339,19 +324,17 @@ public class Model
 		ChangeEvent e = new ChangeEvent(this);
 		for(ChangeListener s: listeners)
 			s.stateChanged(e);
-	}
-	
-	/**
-	 * get the number of undo
-	 * @return numUndoUser1: int
+  }
+  /* gets user 1's number of undos
+	 * @return numUndoUser1: number of times player 1 pressed undo on one turn
 	 */
 	public int getNumUndoUser1()
 	{
 			return numUndoUser1;
 	}
 	/**
-	 * get the number of undo
-	 * @return numUndoUser2: int
+	 * get user 2's number of undos
+	 * @return numUndoUser2: number of times player 2 pressed undo on one turn
 	 */
 	public int getNumUndoUser2()
 	{

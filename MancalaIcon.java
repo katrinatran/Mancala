@@ -3,11 +3,9 @@
  * Class name: MancalaIcon
  * Description: MancalaIcon class implements Icon.
  */
-
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import javax.swing.Icon;
 
 public class MancalaIcon implements Icon
@@ -17,9 +15,9 @@ public class MancalaIcon implements Icon
 	private int width;
 	/**
 	 * Constructor for MancalaIcon
-	 * @param style
-	 * @param w
-	 * @param h
+	 * @param style: MancalaDesign style that is chosen
+	 * @param w: width of icon
+	 * @param h : height of icon
 	 */
 	public MancalaIcon(MancalaDesign style, int w, int h)
 	{
@@ -62,6 +60,5 @@ public class MancalaIcon implements Icon
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		design.draw(g2);
-	}
-
-}
+  }
+}    

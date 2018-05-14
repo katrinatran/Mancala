@@ -2,6 +2,7 @@
  * File name: MancalaTest.java
  * Class name: MancalaTest
  * Description: The client class with main method where all the implementation happens
+ * @author: Hiep Tran, Risako Numamoto, Katrina Tran
 */
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
