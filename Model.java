@@ -85,7 +85,6 @@ public class Model
 			}
 		}
 		prevUser = user;
-
 		if(user == 0)
 		{
 			mancala[0][pitNum] = 0;
@@ -156,13 +155,11 @@ public class Model
 				}
 			}
 		}
-		
 		//since not user 0; goes to this else = user 1
 		else
 		{
 			mancala[1][pitNum] = 0;
 			int i = pitNum;
-			
 			if(numStones <= (6 - pitNum))
 			{
 				while(0 < numStones) 
@@ -171,8 +168,6 @@ public class Model
 					mancala[1][i]++;
 					numStones--;
 				}
-					
-				// check if the last stone was in an empty pit
 				if(mancala[1][i] == 1)
 				{
 					mancala[1][0] += mancala[0][i] + 1;
@@ -191,14 +186,12 @@ public class Model
 						mancala[1][i]++;
 						numStones--;
 					}
-					
 					// check if the last stone was in an empty pit
 					if(numStones == 0 && mancala[1][i] == 1)
 					{
 						mancala[1][0] += mancala[0][i] + 1;
 						mancala[0][i] = mancala[1][i] = 0;
 					}
-					
 					// move and add one to this mancala
 					if(numStones > 0)
 					{
@@ -206,7 +199,6 @@ public class Model
 						mancala[1][0]++;
 						numStones--;
 					}
-					
 					// check for a free turn
 					if(numStones == 0 && i == 0)
 					{
@@ -285,7 +277,6 @@ public class Model
 		}		
 		return winner;
 	}
-	
 	/**
 	 * accessor for player
 	 * @param p: 0 = player 1; 1 = player 2
@@ -333,10 +324,8 @@ public class Model
 		ChangeEvent e = new ChangeEvent(this);
 		for(ChangeListener s: listeners)
 			s.stateChanged(e);
-	}
-	
-	/**
-	 * get the number of undo
+  }
+  /* gets user 1's number of undos
 	 * @return numUndoUser1: number of times player 1 pressed undo on one turn
 	 */
 	public int getNumUndoUser1()
@@ -344,7 +333,7 @@ public class Model
 			return numUndoUser1;
 	}
 	/**
-	 * get the number of undo
+	 * get user 2's number of undos
 	 * @return numUndoUser2: number of times player 2 pressed undo on one turn
 	 */
 	public int getNumUndoUser2()

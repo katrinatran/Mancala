@@ -1,4 +1,3 @@
-=======
 /**
  * File name: CircleDesign.java
  * Class name: CircleDesign
@@ -17,8 +16,8 @@ public class CircleDesign implements MancalaDesign
 	private int y;
 	private int h;
 	private int w;
-	/**
-	 * Constructor for CircleDesign
+  /*
+   * Constructor of CircleDesign
 	 * @param x : x of each pit
 	 * @param y : y of each pit
 	 * @param height : height of board
@@ -35,7 +34,6 @@ public class CircleDesign implements MancalaDesign
 	 * The draw method from MancalaDesign interface.
 	 * draws circle pits with 2 colors.
 	 * @param g2: Graphics2D
-	 * @return none
 	 */
 	public void draw(Graphics2D g2)
 	{
